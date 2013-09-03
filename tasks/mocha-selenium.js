@@ -69,8 +69,8 @@ module.exports = function(grunt) {
     seleniumLauncher({ chrome: options.browserName === 'chrome' }, function(err, selenium) {
       grunt.log.writeln('Selenium Running');
       if(err){
-        selenium.exit();
         grunt.fail.fatal(err);
+        selenium.exit();
         return;
       }
 
