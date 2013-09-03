@@ -81,12 +81,21 @@ module.exports = function(grunt) {
         browserName: options.browserName
       };
 
+      var maybeColor = function() {
+        // if we are not printint to a TTY, do not send ANSI colors
+        var args = Array.prototype.slice.apply(arguments);
+        if (!process.stdout.isTTY) {
+          args = args.splice(1);
+        }
+        grunt.log.writeln.apply(grunt.log, args);
+      };
+
       browser.on('status', function(info){
-        grunt.log.writeln('\x1b[36m%s\x1b[0m', info);
+        maybeColor('\x1b[36m%s\x1b[0m', info);
       });
 
       browser.on('command', function(meth, path, data){
-        grunt.log.debug(' > \x1b[33m%s\x1b[0m: %s', meth, path, data || '');
+        maybeColor(' > \x1b[33m%s\x1b[0m: %s', meth, path, data || '');
       });
 
       browser.init(opts, function(err){
